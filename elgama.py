@@ -1,21 +1,17 @@
 import random 
 
-a = random.randint(2, 10)
-
 def gcd(a, b):
 	if a < b:
 		return gcd(b, a)
 	elif a % b == 0:
-		return b;
+		return b
 	else:
 		return gcd(b, a % b)
 
 def gen_key(q):
-
 	key = random.randint(pow(10, 20), q)
 	while gcd(q, key) != 1:
 		key = random.randint(pow(10, 20), q)
-
 	return key
 
 def power(a, b, c):
@@ -30,12 +26,9 @@ def power(a, b, c):
 
 	return x % c
 
-
 def encrypt(msg, q, h, g):
-
 	en_msg = []
-
-	k = gen_key(q)# Private key for sender
+	k = gen_key(q)  
 	s = power(h, k, q)
 	p = power(g, k, q)
 	
@@ -50,32 +43,29 @@ def encrypt(msg, q, h, g):
 	return en_msg, p
 
 def decrypt(en_msg, p, key, q):
-
 	dr_msg = []
 	h = power(p, key, q)
 	for i in range(0, len(en_msg)):
-		dr_msg.append(chr(int(en_msg[i]/h)))
-		
+		dr_msg.append(chr(int(en_msg[i]/h)))	
 	return dr_msg
 
 def main():
-
 	msg = 'Đại học Công Nghiệp'
 	print("Original Message :", msg)
 
 	q = random.randint(pow(10, 20), pow(10, 50))
 	g = random.randint(2, q)
 
-	key = gen_key(q)
+	key = gen_key(q)  
 	h = power(g, key, q)
 	print("g used : ", g)
 	print("g^a used : ", h)
 
 	en_msg, p = encrypt(msg, q, h, g)
+	print("Encrypted Message:", en_msg) 
 	dr_msg = decrypt(en_msg, p, key, q)
 	dmsg = ''.join(dr_msg)
-	print("Decrypted Message :", dmsg);
-
+	print("Decrypted Message :", dmsg)
 
 if __name__ == '__main__':
 	main()
