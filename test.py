@@ -1,6 +1,6 @@
 import random
 from sympy import isprime
-
+# pip install sympy
 def generate_large_prime(keysize):
     while True:
         num = random.randint(2 ** (keysize - 1), 2 ** keysize - 1)
