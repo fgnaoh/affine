@@ -43,3 +43,26 @@ print("Ma hoa: ", encrypted_text)
 decrypted_text = affine_decipher(encrypted_text,key_a,key_b)
 print("Giai ma: ", decrypted_text)
 
+Hãy giải thích từng hàm trong mã trên:
+
+1. Hàm `egcd(a, b)` (Extended Euclidean Algorithm):
+   - Hàm này tính định thức của Euclid mở rộng cho hai số nguyên a và b.
+   - Đầu vào: hai số nguyên a và b.
+   - Đầu ra: một bộ ba (g, x, y) sao cho g là ước chung lớn nhất của a và b, và x, y là các số nguyên thỏa mãn phương trình ax + by = g.
+
+2. Hàm `mod_inverse(a, m)`:
+   - Hàm này tính nghịch đảo modulo của số nguyên a theo modulo m.
+   - Đầu vào: hai số nguyên a và m.
+   - Đầu ra: nghịch đảo modulo của a theo modulo m. Nếu nghịch đảo không tồn tại (g != 1), hàm sẽ ném một ngoại lệ.
+
+3. Hàm `affine_cipher(text, key_a, key_b)`:
+   - Hàm này thực hiện mã hóa văn bản theo phương pháp Affine Cipher.
+   - Đầu vào: văn bản cần được mã hóa (text), hai khóa số nguyên key_a và key_b.
+   - Đầu ra: văn bản đã được mã hóa.
+
+4. Hàm `affine_decipher(text, key_a, key_b)`:
+   - Hàm này thực hiện giải mã văn bản đã được mã hóa bằng Affine Cipher.
+   - Đầu vào: văn bản đã được mã hóa (text), hai khóa số nguyên key_a và key_b.
+   - Đầu ra: văn bản đã được giải mã.
+
+Trong ví dụ cụ thể, văn bản "Faker" được mã hóa bằng Affine Cipher với key_a = 3 và key_b = 7. Sau đó, văn bản đã được mã hóa được giải mã trở lại để tạo ra văn bản ban đầu. Kết quả sẽ được in ra màn hình.
