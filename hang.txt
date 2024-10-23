@@ -1,0 +1,3 @@
+#01	iPhone1		20	125000	
+#01	iPhone1		200	100000	ip1.jpg
+#01	iPhone1		10	40000	ip1.jpg

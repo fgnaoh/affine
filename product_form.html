@@ -1,0 +1,29 @@
+<!-- product_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Form</title>
+</head>
+<body>
+    <h2>ENTER PRODUCT'S INFORMATION</h2>
+    <form action="save_product.php" method="post" enctype="multipart/form-data">
+        Enter code of product: <input type="text" name="code" required><br>
+        Enter name of product: <input type="text" name="name" required><br>
+        Product classification: 
+        <select name="classify">
+            <?php
+                $lines = file('category.txt');
+                foreach ($lines as $line) {
+                    list($codeGroup, $nameGroup) = explode("\t", trim($line));
+                    echo "<option value="$codeGroup">$nameGroup</option>";
+            }
+            ?>
+        </select><br>
+        Quantity: <input type="number" name="quantity" required><br>
+        Price: <input type="number" name="price" required><br>
+        Image: <input type="file" name="image" accept="image/*"><br>
+        <input type="submit" value="Lưu sản phẩm">
+    </form>
+</body>
+</html>

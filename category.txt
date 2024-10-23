@@ -1,0 +1,2 @@
+#001	Iphone	it's running IOS operating system
+#002	Samsung	it's running Android operating system
