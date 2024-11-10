@@ -1,3 +1,7 @@
-#01	iPhone1		20	125000	
-#01	iPhone1		200	100000	ip1.jpg
-#01	iPhone1		10	40000	ip1.jpg
+001	T1 Faker	1	5000000	faker.jpg
+002	Guma	1	45000000	
+002	guma	1	30000	guma2.jpg
+86362	Android	15	450000000	
+009	Apple	1	45000000	Guma.jpg
+86362	Android	1	30000	
+098	Thời sự	37	1	
