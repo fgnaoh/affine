@@ -1,56 +1,45 @@
-<?php
-// view_cart.php
-session_start();
+from enum import Enum
+from collections import namedtuple
 
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+Location = Enum('Location',['A','B'])
+State = namedtuple('State',['man','cabbage','goat','wolf'])
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
-    $order_id = file_exists('donhang.txt') ? count(file('donhang.txt')) + 1 : 1;
-    $time = date('Y-m-d H:i:s');
-    $total = 0;
-    
-    foreach ($_SESSION['cart'] as $ma_hang => $item) {
-        $total += $item['so_luong'] * $item['don_gia'];
-        $detail = "$order_id\t$ma_hang\t{$item['ten_hang']}\t{$item['so_luong']}\t{$item['don_gia']}\n";
-        file_put_contents('chitietdonhang.txt', $detail, FILE_APPEND);
-    }
+def is_valid(state):
+    goat_eats_cabbage = (state.goat == state.cabbage and state.man != state.goat)
+    wofl_eats_goat = (state.wolf == state.goat and state.man != state.wolf)
+    return not (goat_eats_cabbage or wofl_eats_goat)
+def depth_first_search(start, is_goal, get_neighbors):
+    parent = dict()
+    to_visit =[start]
+    discovered = set([start])
+    while to_visit:
+        vertex = to_visit.pop()
+        if is_goal(vertex):
+            path = []
+            while vertex is not None:
+                path.insert(0, vertex)
+                vertex = parent.get(vertex)
+            return path
+        
+        for neighbor in get_neighbors(vertex):
+            if neighbor not in discovered and is_valid(neighbor):
+                discovered.add(neighbor)
+                parent[neighbor] = vertex
+                to_visit.append(neighbor)
 
-    $order = "$order_id\t$time\t$total\n";
-    file_put_contents('donhang.txt', $order, FILE_APPEND);
+start_state = State(man = Location.A,cabbage = Location.A, goat = Location.A, wolf = Location.A)
+goal_state = State(man = Location.B,cabbage = Location.B, goat = Location.B, wolf = Location.B)
 
-    $_SESSION['cart'] = []; // Clear cart
-    echo "Đơn hàng đã được đặt.";
-}
-?>
+def get_neighbors(state):
+    neighbors = []
+    for obj in ['man','cabbage','goat','wolf']:
+        if getattr(state, obj) == state.man:
+            new_location = Location.A if state.man == Location.B else Location.B
+            new_state = State(** {k: new_location if k == obj or k =='man' else v for k, v in state._asdict().items()})
+            neighbors.append(new_state)
+        return neighbors
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Giỏ hàng</title>
-</head>
-<body>
-    <h2>Giỏ hàng của bạn</h2>
-    <table border="1">
-        <tr>
-            <th>Mã hàng</th>
-            <th>Tên hàng</th>
-            <th>Số lượng</th>
-            <th>Đơn giá</th>
-        </tr>
-        <?php foreach ($_SESSION['cart'] as $ma_hang => $item): ?>
-            <tr>
-                <td><?= $ma_hang ?></td>
-                <td><?= $item['ten_hang'] ?></td>
-                <td><?= $item['so_luong'] ?></td>
-                <td><?= $item['don_gia'] ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-    <form method="post">
-        <input type="submit" name="place_order" value="Đặt hàng">
-    </form>
-</body>
-</html>
+path = depth_first_search(start=start_state, is_goal=goal_state.__eq__,get_neighbors=get_neighbors)
+for state in path:
+    print(state)
+            
